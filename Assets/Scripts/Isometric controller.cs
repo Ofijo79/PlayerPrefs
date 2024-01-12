@@ -31,6 +31,7 @@ public class Isometriccontroller : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
         save = GameObject.Find("SaveManager").GetComponent<SaveCheckpoint>();
+        PlayerRestart();
     }
 
     // Update is called once per frame
@@ -42,6 +43,11 @@ public class Isometriccontroller : MonoBehaviour
         Movement();
 
         Jump();
+    }
+
+    void PlayerRestart()
+    {
+        transform.position = new Vector3(save.userPosition.x,save.userPosition.y,save.userPosition.z);
     }
 
     void Movement()
@@ -75,11 +81,25 @@ public class Isometriccontroller : MonoBehaviour
         _controller.Move(_playerGravity * Time.deltaTime);
     }
 
-    void OnTriggerEnter(BoxCollider collider)
+    void OnTriggerEnter(Collider other)
     {
-        if(collider.gameObject.layer == 6)
+        if(other.gameObject.layer == 6)
         {
-            SaveManager.instance.SaveData();
+            save.checkpoint = "1";
+            save.SaveData();
+            Debug.Log("Save");
+        }
+        if(other.gameObject.layer == 7)
+        {
+            save.checkpoint = "2";
+            save.SaveData();
+            Debug.Log("Save");
+        }
+        if(other.gameObject.layer == 8)
+        {
+            save.checkpoint = "3";
+            save.SaveData();
+            Debug.Log("Save");
         }
     }
 }

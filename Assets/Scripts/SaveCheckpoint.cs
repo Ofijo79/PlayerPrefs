@@ -5,35 +5,42 @@ using UnityEngine.UI;
 
 public class SaveCheckpoint : MonoBehaviour
 {
-    [SerializeField] Text userPositionText;
+    [SerializeField] Text checkText;
+    
+    //[SerializeField] Text userPositionText;
 
-    [SerializeField] Vector3 userPosition;
+    [SerializeField] public string checkpoint;
+
+    [SerializeField]public Vector3 userPosition;
+
+    Isometriccontroller player;
+
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        player = GameObject.Find("Player").GetComponent<Isometriccontroller>();
         LoadData();
     }
 
     public void SaveData()
     {
-        
-        PlayerPrefs.SetFloat("positionX", userPosition.x);
+        PlayerPrefs.SetString("name", checkpoint);
 
-        PlayerPrefs.SetFloat("positionY", userPosition.y);
+        PlayerPrefs.SetFloat("positionX", player.transform.position.x);
 
-        PlayerPrefs.SetFloat("positionZ", userPosition.z);
+        PlayerPrefs.SetFloat("positionY", player.transform.position.y);
+
+        PlayerPrefs.SetFloat("positionZ", player.transform.position.z);
 
         LoadData();
     }
 
     void LoadData()
     {
-        userPositionText.text = "User position: " + PlayerPrefs.GetFloat("positionX", 696.3).ToString() + "x "+
-
-                                PlayerPrefs.GetFloat("positionY", 27.6).ToString() + "y "+
-
-                                PlayerPrefs.GetFloat("positionZ", -246.5029).ToString() + "z ";
+        checkText.text = "Checkpoint: " + PlayerPrefs.GetString("name", "No name");
+        
+        userPosition = new Vector3 (PlayerPrefs.GetFloat("positionX", 696.3f),PlayerPrefs.GetFloat("positionY", 27.6f),PlayerPrefs.GetFloat("positionZ", -246.5029f));
     }
 
 
